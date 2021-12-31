@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
             }
         } catch (e: Exception) {
-            Toast.makeText(applicationContext, "An error occurred,might be your internet",
+            Toast.makeText(applicationContext, "An error occurred.Might be your internet",
                 Toast.LENGTH_SHORT).show()
         }
     }
