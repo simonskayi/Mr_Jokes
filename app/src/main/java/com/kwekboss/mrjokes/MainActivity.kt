@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch(Dispatchers.IO) {
 
             try {
-                val response = RetrofitInstance.retrofit.getAllJokes().awaitResponse()
+                val response = RetrofitInstance.retrofit.getAllJokes()
                 if (response.isSuccessful) {
                     val accessGranted = response.body()!!
 
