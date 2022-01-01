@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.kwekboss.mrjokes.api.RetrofitInstance
 import kotlinx.coroutines.*
+import retrofit2.awaitResponse
 
 
 class MainActivity : AppCompatActivity() {
@@ -48,11 +49,12 @@ class MainActivity : AppCompatActivity() {
         answerText.visibility = View.INVISIBLE
         progressBar.visibility = View.VISIBLE
 
-        try {
-            GlobalScope.launch(Dispatchers.IO) {
-                val response = RetrofitInstance.retrofit.getAllJokes()
-                if (response.isSuccessful) {
 
+            GlobalScope.launch(Dispatchers.IO) {
+
+                try {
+                val response = RetrofitInstance.retrofit.getAllJokes().awaitResponse()
+                if (response.isSuccessful) {
                     val accessGranted = response.body()!!
                     withContext(Dispatchers.Main) {
                         jokeText.visibility = View.VISIBLE
@@ -62,11 +64,11 @@ class MainActivity : AppCompatActivity() {
                         answerText.text = accessGranted.delivery
                     }
                 }
-
             }
-        } catch (e: Exception) {
-            Toast.makeText(applicationContext, "An error occurred.Might be your internet",
-                Toast.LENGTH_SHORT).show()
+                catch (e: Exception) {
+                    Toast.makeText(applicationContext, "An error occurred.Might be your internet",
+                        Toast.LENGTH_SHORT).show()
+        }
         }
     }
 
