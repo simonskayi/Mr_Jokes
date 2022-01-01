@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var jokeText: TextView
     private lateinit var answerText: TextView
     private lateinit var checkAnswer: Button
-    private  lateinit var newJoke: Button
+    private lateinit var newJoke: Button
     private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,12 +50,13 @@ class MainActivity : AppCompatActivity() {
         progressBar.visibility = View.VISIBLE
 
 
-            GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.IO) {
 
-                try {
+            try {
                 val response = RetrofitInstance.retrofit.getAllJokes().awaitResponse()
                 if (response.isSuccessful) {
                     val accessGranted = response.body()!!
+
                     withContext(Dispatchers.Main) {
                         jokeText.visibility = View.VISIBLE
                         progressBar.visibility = View.INVISIBLE
@@ -64,12 +65,13 @@ class MainActivity : AppCompatActivity() {
                         answerText.text = accessGranted.delivery
                     }
                 }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main){Toast.makeText(
+                    applicationContext, "An error occurred.Might be your internet",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-                catch (e: Exception) {
-                    Toast.makeText(applicationContext, "An error occurred.Might be your internet",
-                        Toast.LENGTH_SHORT).show()
-        }
+            }
         }
     }
-
 }
